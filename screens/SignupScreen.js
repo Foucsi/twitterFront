@@ -9,13 +9,36 @@ import React from "react";
 import { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function SignupScreen() {
+export default function SignupScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState("");
 
   const handleSubmit = () => {
-    console.log("test");
+    fetch("http://172.20.10.2:3000/users/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result) {
+          navigation.navigate("Welcome");
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setMsg("");
+        } else if (data.error === "Missing or empty fields") {
+          setMsg("Missing or empty fields");
+        } else if (data.error === "User already exists") {
+          setMsg("User already exists");
+        }
+      });
   };
   return (
     <View style={styles.container}>
@@ -31,6 +54,7 @@ export default function SignupScreen() {
           autoCapitalize={false}
           style={styles.input}
           value={username}
+          onChangeText={(value) => setUsername(value)}
         />
         <TextInput
           placeholder="Email"
@@ -38,6 +62,7 @@ export default function SignupScreen() {
           autoCapitalize={false}
           style={styles.input}
           value={email}
+          onChangeText={(value) => setEmail(value)}
         />
         <TextInput
           placeholder="Password"
@@ -46,7 +71,11 @@ export default function SignupScreen() {
           secureTextEntry={true}
           style={styles.input}
           value={password}
+          onChangeText={(value) => setPassword(value)}
         />
+      </View>
+      <View style={{ height: 25 }}>
+        <Text style={{ color: "#00acee" }}>{msg}</Text>
       </View>
       <TouchableOpacity
         onPress={() => handleSubmit()}
@@ -77,6 +106,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#EBF0F1",
     paddingBottom: 10,
+    color: "#EBF0F1",
   },
   containerBtn: {
     borderColor: "#00acee",
