@@ -16,7 +16,7 @@ export default function SignupScreen({ navigation }) {
   const [msg, setMsg] = useState("");
 
   const handleSubmit = () => {
-    fetch("http://172.20.10.2:3000/users/signup", {
+    fetch("http://192.168.1.51:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
