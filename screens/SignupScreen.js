@@ -8,12 +8,16 @@ import {
 import React from "react";
 import { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { login } from "../reducers/users";
 
 export default function SignupScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     fetch("http://192.168.1.51:3000/users/signup", {
@@ -28,6 +32,9 @@ export default function SignupScreen({ navigation }) {
       .then((res) => res.json())
       .then((data) => {
         if (data.result) {
+          dispatch(
+            login({ username: username, email: email, password: password })
+          );
           navigation.navigate("Welcome");
           setUsername("");
           setEmail("");
