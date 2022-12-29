@@ -36,7 +36,30 @@ export default function SignupScreen({ navigation }) {
         } else if (data.error === "Missing or empty fields") {
           setMsg("Missing or empty fields");
         } else if (data.error === "User already exists") {
-          setMsg("User already exists");
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setMsg(
+            <View>
+              <Text style={{ color: "#00acee" }}>User already exists</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setMsg("");
+                  navigation.navigate("Signin");
+                }}
+              >
+                <Text
+                  style={{
+                    textDecorationLine: "underline",
+                    textDecorationStyle: "solid",
+                    textDecorationColor: "#000",
+                  }}
+                >
+                  connection
+                </Text>
+              </TouchableOpacity>
+            </View>
+          );
         }
       });
   };

@@ -33,7 +33,31 @@ export default function SigninScreen({ navigation }) {
         } else if (data.error === "Missing or empty fields") {
           setMsg("Missing or empty fields");
         } else if (data.error === "User not found or wrong password") {
-          setMsg("User not found or wrong password");
+          setPassword("");
+          setUsername("");
+          setMsg(
+            <View>
+              <Text style={{ color: "#00acee" }}>
+                User not found or wrong password
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  setMsg("");
+                  navigation.navigate("Signup");
+                }}
+              >
+                <Text
+                  style={{
+                    textDecorationLine: "underline",
+                    textDecorationStyle: "solid",
+                    textDecorationColor: "#000",
+                  }}
+                >
+                  register
+                </Text>
+              </TouchableOpacity>
+            </View>
+          );
         }
       });
   };
