@@ -64,7 +64,12 @@ export default function SigninScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View>
-        <FontAwesome5 name="twitter" size={24} color="#00acee" />
+        <FontAwesome5
+          name="twitter"
+          size={24}
+          color="#00acee"
+          onPress={() => navigation.navigate("Home")}
+        />
         <Text>Connection</Text>
       </View>
 
