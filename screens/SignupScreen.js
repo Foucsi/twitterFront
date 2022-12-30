@@ -10,6 +10,7 @@ import { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/users";
+import fetchIp from "../fecthIp.json";
 
 export default function SignupScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -20,7 +21,7 @@ export default function SignupScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    fetch("http://192.168.1.51:3000/users/signup", {
+    fetch(`http://${fetchIp.myIp}:3000/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
