@@ -5,6 +5,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
+import { EvilIcons } from "@expo/vector-icons";
 
 export default function Header({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -17,11 +18,7 @@ export default function Header({ navigation }) {
         animationType="fade"
         onRequestClose={() => setModalVisible(false)}
       >
-        <TouchableOpacity
-          activeOpacity={1}
-          onPressOut={() => setModalVisible(false)}
-          style={styles.centeredView}
-        >
+        <View style={styles.centeredView}>
           <View style={styles.headerModal}>
             <View
               style={{
@@ -35,10 +32,16 @@ export default function Header({ navigation }) {
             >
               <FontAwesome name="user-circle-o" size={44} color="grey" />
             </View>
+            <EvilIcons
+              name="close-o"
+              size={24}
+              color="#fff"
+              onPress={() => setModalVisible(false)}
+            />
             <Feather name="settings" size={44} color="#fff" />
           </View>
           <Text style={{ color: "#fff" }}>Hi {users.username} !</Text>
-        </TouchableOpacity>
+        </View>
       </Modal>
       <FontAwesome
         name="user-circle-o"
