@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import React from "react";
 import { useSelector } from "react-redux";
 import Header from "../components/Header";
@@ -14,6 +14,7 @@ export default function WelcomeScreen({ navigation }) {
   const [allTweets, setAllTweets] = useState([]);
   const [postTweet, setPostTweet] = useState("");
   const [username, setUsername] = useState("");
+  const [getUser, setGetUser] = useState(false);
   const users = useSelector((state) => state.user.value);
 
   useEffect(() => {
@@ -68,43 +69,67 @@ export default function WelcomeScreen({ navigation }) {
     <View style={styles.container}>
       <Header navigation={navigation} />
       <View style={{ height: "85%", width: "100%" }}>
-        <View style={{ backgroundColor: "grey", height: "10%" }}>
+        <View
+          style={{
+            height: "10%",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
           <TextInput
             value={postTweet}
             onChangeText={(value) => setPostTweet(value)}
             placeholder="add tweet"
-            placeholderTextColor="#fff"
+            placeholderTextColor="grey"
             style={{
-              paddingBottom: 10,
-              borderBottomColor: "#fff",
-              borderWidth: 1,
+              padding: 10,
+              width: 250,
+              height: 40,
+              borderColor: "#00acee",
+              borderWidth: 0.5,
             }}
           />
           <MaterialIcons
             name="add-comment"
-            size={24}
-            color="#fff"
+            size={36}
+            color="#00acee"
             onPress={() => handlePostTweet()}
           />
         </View>
+
         <View style={{ width: "100%", height: "80%" }}>
-          {allTweets.length > 0 ? (
-            // Si la longueur de allTweets est supérieure à 0, on affiche les tweets
-            allTweets.map((elmt, index) => {
-              // Si l'élément courant contient plus d'un tweet, on affiche tous les tweets
-              if (elmt.length > 1) {
-                return elmt.map((e, i) => <Tweet key={i} tweet={e.tweet} />);
-              } else {
-                // Sinon, on vérifie si l'élément existe, et on affiche le tweet s'il existe
-                return elmt[0] ? (
-                  <Tweet key={index} tweet={elmt[0].tweet} />
-                ) : null;
-              }
-            })
-          ) : (
-            // Sinon, on affiche un message indiquant qu'il n'y a pas de tweets
-            <Text>L'utilisateur n'a pas de tweets enregistrés</Text>
-          )}
+          <ScrollView style={{ flex: 1, width: "100%" }}>
+            {allTweets.length > 0 ? (
+              // Si la longueur de allTweets est supérieure à 0, on affiche les tweets
+              allTweets.map((elmt, index) => {
+                // Si l'élément courant contient plus d'un tweet, on affiche tous les tweets
+                if (elmt.length > 1) {
+                  return elmt.map((e, i) => (
+                    <Tweet
+                      key={i}
+                      tweet={e.tweet}
+                      getUser={getUser}
+                      setGetUser={setGetUser}
+                    />
+                  ));
+                } else {
+                  // Sinon, on vérifie si l'élément existe, et on affiche le tweet s'il existe
+                  return elmt[0] ? (
+                    <Tweet
+                      key={index}
+                      tweet={elmt[0].tweet}
+                      getUser={getUser}
+                      setGetUser={setGetUser}
+                    />
+                  ) : null;
+                }
+              })
+            ) : (
+              // Sinon, on affiche un message indiquant qu'il n'y a pas de tweets
+              <Text>L'utilisateur n'a pas de tweets enregistrés</Text>
+            )}
+          </ScrollView>
         </View>
       </View>
     </View>
