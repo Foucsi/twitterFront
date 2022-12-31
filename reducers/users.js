@@ -22,9 +22,7 @@ export const userSlice = createSlice({
       state.value.tweet.push(action.payload.tweet);
     },
     logout: (state) => {
-      state.value.password = null;
-      state.value.username = null;
-      state.value.email = null;
+      state.value.tweet = [];
     },
   },
 });

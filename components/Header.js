@@ -7,11 +7,16 @@ import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { EvilIcons } from "@expo/vector-icons";
 import fetchIp from "../fecthIp.json";
+import { AntDesign } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { logout } from "../reducers/users";
 
 export default function Header({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const users = useSelector((state) => state.user.value);
   const [username, setUsername] = useState("");
+  const [numberTweet, setNumberTweet] = useState(0);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch(`http://${fetchIp.myIp}:3000/users/user/${users.token}`)
@@ -20,6 +25,20 @@ export default function Header({ navigation }) {
         setUsername(data.data);
       });
   }, []);
+
+  const refresh = () => {
+    fetch(`http://${fetchIp.myIp}:3000/tweets/numberTweet/${username}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result) {
+          setNumberTweet(data.data);
+        }
+      });
+  };
+
+  const handleLogout = () => {
+    navigation.navigate("Home");
+  };
 
   return (
     <View style={styles.header}>
@@ -49,22 +68,36 @@ export default function Header({ navigation }) {
               color="#fff"
               onPress={() => setModalVisible(false)}
             />
+
             <Feather name="settings" size={44} color="#fff" />
           </View>
           <Text style={{ color: "#fff" }}>Hi {username} !</Text>
+          <Text style={{ color: "#fff" }}>
+            Nombres de tweets : {numberTweet}
+          </Text>
         </View>
       </Modal>
       <FontAwesome
         name="user-circle-o"
         size={24}
         color="black"
-        onPress={() => setModalVisible(true)}
+        onPress={() => {
+          refresh();
+          setModalVisible(true);
+        }}
       />
+
       <FontAwesome5
         name="twitter"
         size={24}
         color="#00acee"
         onPress={() => navigation.navigate("Home")}
+      />
+      <AntDesign
+        name="logout"
+        size={24}
+        color="black"
+        onPress={() => handleLogout()}
       />
     </View>
   );

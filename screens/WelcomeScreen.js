@@ -13,7 +13,16 @@ import { useDispatch } from "react-redux";
 export default function WelcomeScreen({ navigation }) {
   const [allTweets, setAllTweets] = useState([]);
   const [postTweet, setPostTweet] = useState("");
+  const [username, setUsername] = useState("");
   const users = useSelector((state) => state.user.value);
+
+  useEffect(() => {
+    fetch(`http://${fetchIp.myIp}:3000/users/user/${users.token}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUsername(data.data);
+      });
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -35,7 +44,8 @@ export default function WelcomeScreen({ navigation }) {
 
   const handlePostTweet = () => {
     if (postTweet) {
-      fetch(`http://${fetchIp.myIp}:3000/tweets/addTweets/${users.username}`, {
+      console.log(users.username);
+      fetch(`http://${fetchIp.myIp}:3000/tweets/addTweets/${username}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tweet: postTweet }),
