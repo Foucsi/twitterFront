@@ -2,14 +2,25 @@ import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 import React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { EvilIcons } from "@expo/vector-icons";
+import fetchIp from "../fecthIp.json";
 
 export default function Header({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const users = useSelector((state) => state.user.value);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    fetch(`http://${fetchIp.myIp}:3000/users/user/${users.token}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUsername(data.data);
+      });
+  }, []);
+
   return (
     <View style={styles.header}>
       <Modal
@@ -40,7 +51,7 @@ export default function Header({ navigation }) {
             />
             <Feather name="settings" size={44} color="#fff" />
           </View>
-          <Text style={{ color: "#fff" }}>Hi {users.username} !</Text>
+          <Text style={{ color: "#fff" }}>Hi {username} !</Text>
         </View>
       </Modal>
       <FontAwesome

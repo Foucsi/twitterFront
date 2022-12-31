@@ -34,7 +34,11 @@ export default function SignupScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           dispatch(
-            login({ username: username, email: email, password: password })
+            login({
+              username: data.user.username,
+              email: data.user.email,
+              token: data.user.token,
+            })
           );
           navigation.navigate("Welcome");
           setUsername("");
