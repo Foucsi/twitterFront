@@ -8,14 +8,21 @@ import { EvilIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
-export default function Tweet({ tweet, getRefresh, navigation }) {
+export default function Tweet({ tweet, getRefresh }) {
   const [user, setUser] = useState("");
   const [getUser, setGetUser] = useState(false);
   const users = useSelector((state) => state.user.value);
-  const [colorHeart, setColorHeart] = useState(false);
+  const [colorHeart, setColorHeart] = useState();
 
   useEffect(() => {
     refreshpage();
+    console.log("color: ", colorHeart);
+    fetch(`http://${fetchIp.myIp}:3000/tweets/getLiked/${tweet}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const test = data.data.map((e) => e.liked);
+        test.map((e) => setColorHeart(e));
+      });
   }, []);
 
   const refreshpage = () => {
@@ -23,7 +30,6 @@ export default function Tweet({ tweet, getRefresh, navigation }) {
       .then((res) => res.json())
       .then((data) => {
         setUser(data.data);
-
         if (data.data === users.username) {
           setGetUser(true);
         }
@@ -46,6 +52,24 @@ export default function Tweet({ tweet, getRefresh, navigation }) {
           getRefresh();
         });
     }
+  };
+
+  const handleHeart = () => {
+    fetch(`http://${fetchIp.myIp}:3000/tweets/isLiked/${tweet}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ liked: !colorHeart }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.result) {
+          console.log(data.data);
+          data.data ? setColorHeart(true) : setColorHeart(false);
+          getRefresh();
+        } else {
+          console.log(data.result);
+        }
+      });
   };
   return (
     <View style={styles.container}>
@@ -77,7 +101,7 @@ export default function Tweet({ tweet, getRefresh, navigation }) {
           name="heart"
           size={20}
           color={colorHeart ? "red" : "#25283D"}
-          onPress={() => setColorHeart(!colorHeart)}
+          onPress={() => handleHeart()}
         />
         {getUser && (
           <AntDesign
