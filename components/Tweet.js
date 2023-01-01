@@ -8,12 +8,16 @@ import { EvilIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 
-export default function Tweet({ tweet }) {
+export default function Tweet({ tweet, getRefresh, navigation }) {
   const [user, setUser] = useState("");
   const [getUser, setGetUser] = useState(false);
   const users = useSelector((state) => state.user.value);
 
   useEffect(() => {
+    refreshpage();
+  }, []);
+
+  const refreshpage = () => {
     fetch(`http://${fetchIp.myIp}:3000/tweets/userByTweet/${tweet}`)
       .then((res) => res.json())
       .then((data) => {
@@ -23,7 +27,25 @@ export default function Tweet({ tweet }) {
           setGetUser(true);
         }
       });
-  }, []);
+  };
+
+  const handleRemove = (e) => {
+    if (e === tweet) {
+      fetch(
+        `http://${fetchIp.myIp}:3000/tweets/removeTweets/${users.username}`,
+        {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tweet: tweet }),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.result);
+          getRefresh();
+        });
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
@@ -45,7 +67,14 @@ export default function Tweet({ tweet }) {
       </View>
       <View style={{ flexDirection: "row" }}>
         <EvilIcons name="heart" size={24} color="black" />
-        {getUser && <AntDesign name="delete" size={20} color="black" />}
+        {getUser && (
+          <AntDesign
+            name="delete"
+            size={20}
+            color="black"
+            onPress={() => handleRemove(tweet)}
+          />
+        )}
       </View>
     </View>
   );

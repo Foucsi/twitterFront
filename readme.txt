@@ -1,2 +1,3 @@
 - ajouter le logout: ok FAIT
-- ajouter la possibilité de supprimer un tweet
+- ajouter la possibilité de supprimer un tweet: OK FAIT
+- ajouter la possibilité de liker

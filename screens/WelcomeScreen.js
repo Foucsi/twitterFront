@@ -111,6 +111,8 @@ export default function WelcomeScreen({ navigation }) {
                       tweet={e.tweet}
                       getUser={getUser}
                       setGetUser={setGetUser}
+                      getRefresh={getRefresh}
+                      navigation={navigation}
                     />
                   ));
                 } else {
@@ -121,6 +123,8 @@ export default function WelcomeScreen({ navigation }) {
                       tweet={elmt[0].tweet}
                       getUser={getUser}
                       setGetUser={setGetUser}
+                      getRefresh={getRefresh}
+                      navigation={navigation}
                     />
                   ) : null;
                 }
