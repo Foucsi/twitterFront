@@ -1,3 +1,5 @@
 - ajouter le logout: ok FAIT
 - ajouter la possibilité de supprimer un tweet: OK FAIT
-- ajouter la possibilité de liker
+- ajouter la possibilité de liker : OK FAIT
+- Enregistrer en base de donnée les like
+- Corriger le probleme de mis a jour de la corbeille au tweet

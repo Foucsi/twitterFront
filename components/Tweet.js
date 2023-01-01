@@ -12,6 +12,7 @@ export default function Tweet({ tweet, getRefresh, navigation }) {
   const [user, setUser] = useState("");
   const [getUser, setGetUser] = useState(false);
   const users = useSelector((state) => state.user.value);
+  const [colorHeart, setColorHeart] = useState(false);
 
   useEffect(() => {
     refreshpage();
@@ -50,7 +51,7 @@ export default function Tweet({ tweet, getRefresh, navigation }) {
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
         <View style={{ padding: 5 }}>
-          <FontAwesome name="user-circle-o" size={48} color="black" />
+          <FontAwesome name="user-circle-o" size={48} color="#25283D" />
         </View>
 
         <View style={{ width: "80%", padding: 5 }}>
@@ -65,8 +66,19 @@ export default function Tweet({ tweet, getRefresh, navigation }) {
           <Text>{tweet}</Text>
         </View>
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <EvilIcons name="heart" size={24} color="black" />
+      <View
+        style={{
+          flexDirection: "row",
+          width: 150,
+          justifyContent: "space-around",
+        }}
+      >
+        <FontAwesome
+          name="heart"
+          size={20}
+          color={colorHeart ? "red" : "#25283D"}
+          onPress={() => setColorHeart(!colorHeart)}
+        />
         {getUser && (
           <AntDesign
             name="delete"
