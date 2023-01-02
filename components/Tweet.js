@@ -7,12 +7,14 @@ import { FontAwesome } from "@expo/vector-icons";
 import { EvilIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 export default function Tweet({ tweet, getRefresh }) {
   const [user, setUser] = useState("");
   const [getUser, setGetUser] = useState(false);
   const users = useSelector((state) => state.user.value);
   const [colorHeart, setColorHeart] = useState();
+  const [moreUser, setMoreUser] = useState(false);
 
   useEffect(() => {
     refreshpage();
@@ -103,6 +105,7 @@ export default function Tweet({ tweet, getRefresh }) {
           color={colorHeart ? "red" : "#25283D"}
           onPress={() => handleHeart()}
         />
+
         {getUser && (
           <AntDesign
             name="delete"
@@ -111,6 +114,12 @@ export default function Tweet({ tweet, getRefresh }) {
             onPress={() => handleRemove(tweet)}
           />
         )}
+        <SimpleLineIcons
+          name="user-follow"
+          size={24}
+          color={moreUser ? "#00acee" : "black"}
+          onPress={() => setMoreUser(!moreUser)}
+        />
       </View>
     </View>
   );

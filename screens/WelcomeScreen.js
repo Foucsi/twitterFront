@@ -80,7 +80,7 @@ export default function WelcomeScreen({ navigation }) {
           <TextInput
             value={postTweet}
             onChangeText={(value) => setPostTweet(value)}
-            placeholder="add tweet"
+            placeholder="Quoi de neuf ?"
             placeholderTextColor="grey"
             style={{
               padding: 10,
